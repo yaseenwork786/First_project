@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Eid Mubarak | Radiant Blast Celebration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 30% 10%, #1a4a2a, #0a2a18);
+            font-family: 'Poppins', 'Segoe UI', 'Cairo', 'Tajawal', system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            transition: background 0.3s ease;
+        }
+
+        /* smooth animated stars background */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(2px 2px at 15% 30%, #fff9e0, rgba(0,0,0,0)),
+                              radial-gradient(1px 1px at 75% 55%, #ffecb3, rgba(0,0,0,0)),
+                              radial-gradient(3px 2px at 45% 80%, #ffe3a3, rgba(0,0,0,0));
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            animation: twinkle 4s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        /* canvas for smooth blast particles */
+        #blastCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 2;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        /* main greeting card - soft glassmorphism */
+        .eid-container {
+            position: relative;
+            z-index: 15;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 3rem;
+            padding: 2rem 2.5rem;
+            margin: 1.5rem;
+            border: 1px solid rgba(255, 220, 100, 0.7);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.4), inset 0 0 30px rgba(255,210,80,0.2);
+            transform: scale(0.92) translateY(20px);
+            opacity: 0;
+            transition: transform 0.7s cubic-bezier(0.2, 1.1, 0.4, 1), opacity 0.6s ease;
+            pointer-events: none;
+            max-width: 90vw;
+            width: 650px;
+        }
+
+        .eid-container.show {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 9vw, 4.8rem);
+            font-weight: 800;
+            background: linear-gradient(125deg, #FFE484, #FFBC3C, #FFD966, #FFB347);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255,200,70,0.4);
+            letter-spacing: 0.02em;
+            margin-bottom: 0.6rem;
+            animation: gentleGlow 2.2s infinite alternate;
+        }
+
+        @keyframes gentleGlow {
+            0% { filter: drop-shadow(0 0 2px #ffda77); }
+            100% { filter: drop-shadow(0 0 12px #ffbb33); }
+        }
+
+        .sub {
+            font-size: clamp(0.9rem, 4vw, 1.5rem);
+            color: #FFF5E0;
+            text-shadow: 0 2px 10px #0a2a1a;
+            font-weight: 500;
+            background: rgba(0,0,0,0.35);
+            display: inline-block;
+            padding: 0.3rem 1.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            margin-bottom: 1rem;
+        }
+
+        /* Cow + animal section — Eid-ul-Adha special */
+        .animal-section {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.7rem;
+            background: linear-gradient(135deg, rgba(255,235,180,0.2), rgba(210,150,75,0.15));
+            border-radius: 2.5rem;
+            padding: 1rem 1.5rem;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,205,90,0.6);
+            transition: all 0.3s ease;
+        }
+
+        .cow-emoji-group {
+            font-size: 4rem;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+            animation: cowHappy 1.9s infinite ease-in-out;
+            display: flex;
+            gap: 0.6rem;
+            justify-content: center;
+            letter-spacing: 0.3rem;
+        }
+
+        @keyframes cowHappy {
+            0%, 100% { transform: translateY(0px) rotate(0deg);}
+            50% { transform: translateY(-6px) rotate(2deg);}
+        }
+
+        .animal-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: #ad6b35b3;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            color: #FFF2CC;
+            letter-spacing: 1px;
+        }
+
+        .blessing-line {
+            font-size: 0.9rem;
+            color: #FFF0C0;
+            background: rgba(0,0,0,0.3);
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+        }
+
+        .lantern-icons {
+            margin-top: 1.2rem;
+            font-size: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            filter: drop-shadow(0 0 5px #f7b32b);
+        }
+
+        .lantern-icons span {
+            animation: sway 2.5s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        .lantern-icons span:nth-child(2) { animation-delay: 0.3s; }
+        .lantern-icons span:nth-child(3) { animation-delay: 0.6s; }
+        .lantern-icons span:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-6deg); }
+            50% { transform: rotate(6deg); }
+        }
+
+        /* main blast button - stylish pulsation */
+        .blast-trigger {
+            position: fixed;
+            bottom: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+            background: linear-gradient(125deg, #ffa62e, #ff7b00);
+            border: none;
+            padding: 0.9rem 2.2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: inherit;
+            color: #2c1805;
+            border-radius: 100px;
+            cursor: pointer;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.5), 0 0 0 4px #ffdd99, 0 0 0 8px rgba(255,140,0,0.5);
+            transition: 0.2s;
+            letter-spacing: 2px;
+            animation: buttonPulse 1.3s infinite;
+            backdrop-filter: blur(4px);
+        }
+
+        @keyframes buttonPulse {
+            0% { transform: translateX(-50%) scale(1); box-shadow: 0 12px 28px rgba(0,0,0,0.5), 0 0 0 4px #ffdd99; }
+            100% { transform: translateX(-50%) scale(1.06); box-shadow: 0 15px 35px rgba(0,0,0,0.7), 0 0 0 8px #ffc34d; }
+        }
+
+        .blast-trigger:hover {
+            transform: translateX(-50%) scale(1.05);
+            background: linear-gradient(125deg, #ffbc4a, #ff8c1a);
+            box-shadow: 0 14px 32px black, 0 0 0 6px #ffeaab;
+        }
+
+        .blast-trigger.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: 0.25s;
+        }
+
+        /* floating festive ornaments */
+        .floating-ornament {
+            position: fixed;
+            bottom: -60px;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 1;
+            filter: drop-shadow(0 0 4px gold);
+            animation: floatGentle 9s linear forwards;
+        }
+
+        @keyframes floatGentle {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-130vh) rotate(380deg);
+                opacity: 0;
+            }
+        }
+
+        /* shake effect on blast */
+        .shake-effect {
+            animation: screenShake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        @keyframes screenShake {
+            0% { transform: translate(1px, 1px); }
+            20% { transform: translate(-3px, 0px); }
+            40% { transform: translate(3px, -2px); }
+            60% { transform: translate(-2px, 2px); }
+            80% { transform: translate(1px, -1px); }
+            100% { transform: translate(0,0); }
+        }
+
+        /* responsive polish */
+        @media (max-width: 650px) {
+            .eid-container { padding: 1.4rem 1.2rem; margin: 1rem; width: 90%; }
+            .blast-trigger { padding: 0.6rem 1.5rem; font-size: 1.2rem; bottom: 8%; }
+            .cow-emoji-group { font-size: 2.8rem; gap: 0.3rem; }
+            .animal-text { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="stars-bg"></div>
+<canvas id="blastCanvas"></canvas>
+
+<!-- Main Eid Greeting with Cow & animal based theme (Eid-ul-Adha) -->
+<div class="eid-container" id="eidGreeting">
+    <h1>✨ Eid Mubarak! ✨</h1>
+    <div class="sub">🌙 Eid-ul-Adha · Blessed Celebration 🌙</div>
+    
+    <!-- Special Cow & animal section -->
+    <div class="animal-section">
+        <div class="cow-emoji-group">
+            🐄 🐮 🐂 🐏
+        </div>
+        <div class="animal-text">✦ The Sacred Animal · Spirit of Qurbani ✦</div>
+        <div class="blessing-line">🤍 May your sacrifices bring divine blessings & joy 🤍</div>
+    </div>
+    
+    <div class="lantern-icons">
+        <span>🏮</span> <span>🕌</span> <span>⭐</span> <span>🌙</span> <span>🐪</span>
+    </div>
+</div>
+
+<button class="blast-trigger" id="blastBtn">💥 IGNITE THE BLAST 💥</button>
+
+<script>
+    (function() {
+        // ========== SMOOTH BLAST PARTICLE SYSTEM ==========
+        const canvas = document.getElementById('blastCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let particles = [];
+        let blastTriggered = false;
+        let animationFrameId = null;
+        let activeAnimation = false;
+
+        function resizeCanvasAndReset() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            // if particles exist and we are not animating, keep but resize doesn't break drawing
+            if (particles.length > 0 && !activeAnimation) {
+                startParticleLoop();
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvasAndReset();
+        });
+        resizeCanvasAndReset();
+
+        // random helper
+        function rand(min, max) {
+            return min + Math.random() * (max - min);
+        }
+
+        class Particle {
+            constructor(x, y, vx, vy, size, color, life, decay, type = 'blast') {
+                this.x = x; this.y = y; this.vx = vx; this.vy = vy;
+                this.size = size; this.color = color;
+                this.life = life; this.maxLife = life;
+                this.decay = decay;
+                this.type = type;
+                this.gravity = (type === 'spark') ? 0.1 : 0.05;
+                this.alpha = 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity;
+                this.life -= this.decay;
+                this.alpha = Math.min(1, this.life / this.maxLife);
+                return this.life > 0;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.alpha * 0.95;
+                if (this.type === 'spark') {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.rect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+                    ctx.fill();
+                    // extra glow
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 1.3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 200, 80, ${this.alpha * 0.4})`;
+                    ctx.fill();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 235, 150, ${this.alpha * 0.6})`;
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+
+        // create massive blast and multiple sub-blasts
+        function createFullBlastExplosion() {
+            const colorsList = ['#FFD966', '#FFA447', '#FFB347', '#FFC857', '#F7DC6F', '#FF9F4A', '#FFE484', '#FFBC3C', '#E85D04'];
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            // primary explosion (400 particles)
+            for (let i = 0; i < 420; i++) {
+                const angle = rand(0, Math.PI * 2);
+                const speed = rand(2.2, 17);
+                const vx = Math.cos(angle) * speed * rand(0.7, 1.5);
+                const vy = Math.sin(angle) * speed * rand(0.7, 1.5);
+                const size = rand(2.5, 13);
+                const col = colorsList[Math.floor(Math.random() * colorsList.length)];
+                const life = rand(0.7, 1.8);
+                const decay = rand(0.011, 0.024);
+                const pType = Math.random() > 0.6 ? 'spark' : 'blast';
+                particles.push(new Particle(centerX, centerY, vx, vy, size, col, life, decay, pType));
+            }
+
+            // golden ring + sparkles
+            for (let i = 0; i < 180; i++) {
+                const angle = rand(0, Math.PI * 2);
+                const speed = rand(4, 20);
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+                particles.push(new Particle(centerX, centerY, vx, vy, rand(2, 6), '#FFE4A0', rand(0.6, 1.4), 0.021, 'spark'));
+            }
+
+            // additional bursts at random corners for full screen blast
+            const extraPoints = [
+                { x: width * 0.15, y: height * 0.2 }, { x: width * 0.85, y: height * 0.2 },
+                { x: width * 0.2, y: height * 0.7 }, { x: width * 0.8, y: height * 0.75 },
+                { x: width * 0.5, y: height * 0.1 }, { x: width * 0.5, y: height * 0.9 },
+                { x: width * 0.3, y: height * 0.45 }, { x: width * 0.7, y: height * 0.55 },
+                { x: width * 0.1, y: height * 0.5 }, { x: width * 0.9, y: height * 0.5 }
+            ];
+            for (let point of extraPoints) {
+                for (let p = 0; p < 45; p++) {
+                    const angle = rand(0, Math.PI * 2);
+                    const spd = rand(2, 14);
+                    const vx = Math.cos(angle) * spd;
+                    const vy = Math.sin(angle) * spd;
+                    const hue = rand(35, 60);
+                    const col = `hsl(${hue}, 88%, 58%)`;
+                    particles.push(new Particle(point.x, point.y, vx, vy, rand(2, 8), col, rand(0.5, 1.3), 0.019, 'spark'));
+                }
+            }
+
+            // falling stars from top
+            for (let s = 0; s < 120; s++) {
+                const startX = rand(0, width);
+                const startY = rand(0, height * 0.25);
+                particles.push(new Particle(startX, startY, rand(-3, 3), rand(3, 14), rand(2, 6), '#FFDA88', 0.85, 0.023, 'spark'));
+            }
+        }
+
+        function startParticleLoop() {
+            if (activeAnimation) return;
+            activeAnimation = true;
+            function animateParticles() {
+                if (!blastTriggered && particles.length === 0) {
+                    ctx.clearRect(0, 0, width, height);
+                    if (activeAnimation) {
+                        requestAnimationFrame(animateParticles);
+                    }
+                    return;
+                }
+                ctx.clearRect(0, 0, width, height);
+                let aliveExists = false;
+                for (let i = 0; i < particles.length; i++) {
+                    const isAlive = particles[i].update();
+                    if (isAlive) {
+                        particles[i].draw(ctx);
+                        aliveExists = true;
+                    } else {
+                        particles.splice(i, 1);
+                        i--;
+                    }
+                }
+                if (aliveExists || particles.length > 0) {
+                    requestAnimationFrame(animateParticles);
+                } else {
+                    ctx.clearRect(0, 0, width, height);
+                    activeAnimation = false;
+                }
+            }
+            animateParticles();
+        }
+
+        // graceful floating ornaments after blast
+        function generateFloatingCelebrations() {
+            const icons = ['⭐', '✨', '🌙', '🕌', '🏮', '☪️', '🐄', '🐮', '🐏', '🌙', '🌸', '🎇'];
+            for (let i = 0; i < 85; i++) {
+                const el = document.createElement('div');
+                el.classList.add('floating-ornament');
+                el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                el.style.left = Math.random() * 100 + '%';
+                el.style.fontSize = (Math.random() * 28 + 18) + 'px';
+                const duration = rand(6, 12);
+                el.style.animationDuration = duration + 's';
+                el.style.animationDelay = rand(0, 2) + 's';
+                el.style.opacity = rand(0.4, 0.85);
+                document.body.appendChild(el);
+                setTimeout(() => {
+                    if (el && el.remove) el.remove();
+                }, duration * 1000 + 500);
+            }
+        }
+
+        // continuous sparkling effect around the eid card for liveliness
+        let sparkleInterval = null;
+        function startAroundCardSparkles() {
+            if (sparkleInterval) clearInterval(sparkleInterval);
+            sparkleInterval = setInterval(() => {
+                if (!blastTriggered) return;
+                const card = document.getElementById('eidGreeting');
+                if (!card) return;
+                const rect = card.getBoundingClientRect();
+                if (rect.width > 0) {
+                    for (let i = 0; i < 16; i++) {
+                        const randX = rect.left + Math.random() * rect.width;
+                        const randY = rect.top + Math.random() * rect.height;
+                        particles.push(new Particle(randX, randY, (Math.random() - 0.5) * 2.2, (Math.random() - 0.5) * 2 - 1, rand(2, 5), '#FFD970', 0.6, 0.026, 'spark'));
+                    }
+                    if (!activeAnimation && particles.length > 0) startParticleLoop();
+                }
+            }, 950);
+            setTimeout(() => {
+                if (sparkleInterval) clearInterval(sparkleInterval);
+            }, 7500);
+        }
+
+        // MAIN BLAST ACTION: user click first, then blast and show Eid + Cow
+        function triggerBlastAndCelebrate() {
+            if (blastTriggered) return;
+            blastTriggered = true;
+
+            // hide button
+            const btn = document.getElementById('blastBtn');
+            if (btn) btn.classList.add('hide');
+
+            // generate explosion particles
+            createFullBlastExplosion();
+            startParticleLoop();
+
+            // show greeting with animal (cow)
+            const greetingCard = document.getElementById('eidGreeting');
+            greetingCard.classList.add('show');
+
+            // float decorations
+            generateFloatingCelebrations();
+
+            // smooth screen shake (CSS)
+            document.body.classList.add('shake-effect');
+            setTimeout(() => {
+                document.body.classList.remove('shake-effect');
+            }, 320);
+
+            // start card sparkles
+            startAroundCardSparkles();
+
+            // secondary little blast flourish after 200ms for extra boom effect (smooth)
+            setTimeout(() => {
+                if (blastTriggered) {
+                    for (let i = 0; i < 70; i++) {
+                        const xSpot = rand(width * 0.2, width * 0.8);
+                        const ySpot = rand(height * 0.2, height * 0.8);
+                        const angle = rand(0, Math.PI * 2);
+                        const sp = rand(2, 12);
+                        particles.push(new Particle(xSpot, ySpot, Math.cos(angle) * sp, Math.sin(angle) * sp, rand(2, 7), '#FFBC66', 0.75, 0.022, 'blast'));
+                    }
+                    if (!activeAnimation) startParticleLoop();
+                }
+            }, 180);
+        }
+
+        // attach click event to blast button (CLICK FIRST, NO AUTO)
+        const blastBtn = document.getElementById('blastBtn');
+        if (blastBtn) {
+            blastBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                triggerBlastAndCelebrate();
+            });
+        }
+
+        // ensure canvas performance & no glitch: preload smooth resizing
+        window.addEventListener('load', () => {
+            resizeCanvasAndReset();
+            // pre-warm, but no automatic blast. strictly interactive.
+        });
+
+        // extra background stars soft parallax not needed
+        console.log('Ready! Click the glowing button to blast & reveal Eid Mubarak with Cow Blessings!');
+    })();
+</script>
+</body>
+</html>
